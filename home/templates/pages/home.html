@@ -1,0 +1,149 @@
+{% extends 'pages/base.html' %}
+
+{% block title %}Homepage{% endblock %}
+
+{% block content %}
+<div class="main">
+    <div class="container-fluid mt-3" >
+        <div class="row">
+            <div class="col-6">
+                <div style="max-height: 25rem; overflow: auto;">
+                    <table id="product_table" class="table" style="border-radius: 0.4rem; overflow: hidden;">
+                        <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Image</th>
+                            <th scope="col">Product Name</th>
+                            <th scope="col">In stock</th>
+                            <th scope="col">Price</th>
+                        </tr>
+                        </thead>
+                        <tbody class="table-group-divider">
+                            {% for product in Products %}
+                            <tr onclick="selectRow(this)">
+                                <th scope="row">{{product.id}}</th>
+                                <td><img src="{{product.product_image.url}}" style="max-height:50px" alt="pd_img"></td>
+                                <td>{{product.product_name}}</td>
+                                <td>{{product.product_quantity}}</td>
+                                <td colspan="2">{{product.product_price}}</td>
+                            </tr>
+                        {% endfor %}  
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="col-6">
+                <div style="max-height: 25rem; overflow: auto;">
+                    <table class="table" style="border-radius: 0.4rem; overflow: hidden;">
+                        <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Product Name</th>
+                            <th scope="col">Quantity</th>
+                            <th scope="col">Total price</th>
+                        </tr>
+                        </thead>
+                        <tbody class="table-group-divider">
+                        <tr>
+                            <th scope="row">1</th>
+                            <td>Mark</td>
+                            <td>Otto</td>
+                            <td>@mdo</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid mt-3 px-5 py-4" style="background-color: rgb(217, 201, 219);">
+        <div class="row mt-3 mb-3">
+            <div class="col-6">
+                <span><strong>Item:</strong></span>
+                <input class="product_name" id="selectedName"
+                        style="height:2.5rem; max-width: 10rem; border: none; border-radius: 0.3rem;" 
+                        type="text">
+                <span><strong>Quantity:</strong></span>
+                <input class="quantity_choose" id="quantity_choose" 
+                        style="height:2.5rem; max-width: 10rem; border: none;border-radius: 0.3rem;" 
+                        type="text">
+                <button class="del_input" 
+                        style="width: 6rem; height: 2.5rem; border: none; background-color: #ee9d12; color: #ffffff; ; border-radius: 0.3rem;"
+                        id="del_input"
+                        onclick="handleButtonDel()">
+                        Delete
+                </button>  
+                <button class="cleaer_input" 
+                        style="width: 7rem; height: 2.5rem; border: none; background-color: #676866; color: #ffffff ; border-radius: 0.3rem;"
+                        id="clear_input"
+                        onclick="clearInput()">
+                        <strong>Clear</strong> 
+                </button>  
+            </div>
+            <div class="col-6">
+                <span><strong>Item:</strong></span>
+                <input class="product_name" style="height:2.5rem; max-width: 10rem; border: none;border-radius: 0.3rem;" type="text">
+                <span><strong>Total price:</strong></span>
+                <input class="total_price" style="height:2.5rem; max-width: 10rem; border: none;border-radius: 0.3rem;" type="text"> 
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                {% for number in "0123456789" %}
+                    <button class = "btn_numpad m-2"
+                            style="width: 5rem; height: 2.5rem; border: none; background-color: #732ee1; border-radius: 0.3rem;" 
+                            onclick="handleButtonClick('{{ number }}')">{{ number }}</button>
+                {% endfor %}
+            </div>
+            <div class="col-6">
+                <button class="return" 
+                        style="width: 6rem; height: 2.5rem; border: none; background-color: #f01616; color: #ffffff; ; border-radius: 0.3rem;">
+                        Return
+                </button>  
+                <button class="Create" 
+                        style="width: 7rem; height: 2.5rem; border: none; background-color: #267a11; color: #ffffff ; border-radius: 0.3rem;">
+                        <strong>Create Order</strong> 
+                </button>  
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function handleButtonClick(number) {
+      // Your JavaScript logic here
+      var currentInputValue = document.getElementById('quantity_choose').value;
+      var newInputValue = currentInputValue + number;
+      document.getElementById('quantity_choose').value = newInputValue
+    }
+    function handleButtonDel(){
+        var currentInputValue = document.getElementById('quantity_choose').value;
+        if (currentInputValue.length > 0) {
+                // Xóa đi số cuối cùng từ chuỗi
+                newInputValue = currentInputValue.slice(0, -1);
+                document.getElementById('quantity_choose').value = newInputValue;
+        }
+    }
+    function clearInput(){
+        document.getElementById('quantity_choose').value = ''
+    }
+    function selectRow(row) {
+            // Gỡ bỏ lớp 'selected' từ tất cả các dòng
+            var rows = document.getElementById('product_table').getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+            for (var i = 0; i < rows.length; i++) {
+                rows[i].classList.remove('selected');
+            }
+
+            // Thêm lớp 'selected' cho dòng được chọn
+            row.classList.add('selected');
+            var selectedName = row.cells[2].innerText;
+
+            // Lấy giá trị từ cột thứ hai (column2) của dòng được chọn
+            var selectedPrice = row.cells[4].innerText;
+
+            // Đặt giá trị vào input
+            document.getElementById('selectedName').value = selectedName;
+            
+        }
+
+</script>
+{% endblock %}

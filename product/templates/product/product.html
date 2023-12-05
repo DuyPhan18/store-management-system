@@ -1,0 +1,39 @@
+{% extends "pages/base.html" %}
+
+{% block title %} Product Page {% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row mt-3 pd-3">
+        <div class="col-sm-3">
+        <a class="nav-link active" aria-current="page" href="#">Active</a>
+        </div>
+        <div class="col-sm-3">
+            <a class="nav-link" href="#">Disable</a>
+        </div>
+        
+        <div class="col-sm-3">
+            <form class="d-flex" role="search">
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success" type="submit">Search</button>
+            </form>
+        </div>
+        <div class="col-sm-3">
+            <a href="{% url 'add_product' %} "# class="btn btn-primary" type="submit">Add new product</a> 
+        </div>
+    </div>
+<div class="row">
+{% for product in Products %}
+    <div class="col-sm-2 m-3">
+        <a href="/product/{{product.id}}"  class="card" style="width: 13rem; height: 15rem;"> 
+            <img src="{{product.product_image.url}}" class="card-img-top"style="width: 13rem; height: 10rem;" alt="product_img">
+            <div class="card-body">
+                <h5 class="card-title">{{product.product_name}}</h5>
+                <p class="card-text">{{product.product_price}}</p>
+            </div>
+        </a>
+    </div>
+{% endfor %}
+</div>
+</div>
+{% endblock %}
