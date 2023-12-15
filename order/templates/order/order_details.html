@@ -1,0 +1,33 @@
+<div class="container py-3 px-3">
+    <h3>Order Details - {{ order.id }}</h3>
+    <h4>Seller: <strong>{{order.user}} </strong></h4>
+    <p>Created at : {{order.date}}</p>
+    <h4>Customer: {{order.customer_name}}</h4>
+    <hr/>
+    <p><strong>Items list:</strong></p>
+    
+    <table class="table">
+        <thead>
+            <tr>
+                <th>No</th>
+                <th>Name</th>
+                <th>Quantity</th>
+                <th>Total price</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for detail in order_details %}
+            <tr>
+                <td scope="row">{{ forloop.counter }}</td>
+                <td>{{ detail.product_name }}</td>
+                <td>{{ detail.quantity }}</td>
+                <td> {{ detail.total_price }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <hr/>
+    <p><strong>Total items: </strong>{{order.total_quantity}}</p>
+    <p><strong>Total bill: </strong>{{order.total_bill}}</p>
+    <h2 class="text-center">Thank you for shopping!</h2>
+</div>

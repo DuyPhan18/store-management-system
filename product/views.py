@@ -2,17 +2,25 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect 
 from .models import Product
 from .forms import ProductForm
-from django.views.generic import ListView, DetailView
-
+from django.db.models import Q
 def product_list(request):
-    Data = {'Products': Product.objects.all().order_by('-date')}
-    return render(request, 'product/product.html', Data)
+    query = request.GET.get('search')
+    filterActive = request.GET.get('')
+    Products = Product.objects.all().order_by('id')
+
+    if query:
+        Products = Products.filter(Q(product_name__icontains=query))
+
+    context = {'Products': Products, 'query': query}
+    
+    return render(request, 'product/product.html', context)
 
 def add_product(request):
     if request.method == 'POST':
         form = ProductForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
+            
             return HttpResponseRedirect('/product')  # Chuyển hướng về danh sách sản phẩm sau khi thêm
     else:
         form = ProductForm()

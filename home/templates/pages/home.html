@@ -4,8 +4,8 @@
 
 {% block content %}
 <div class="main">
-    <div class="container-fluid mt-3" >
-        <div class="row">
+    <div class="container-fluid mt-3"  >
+        <div class="row"style="height: 80%">
             <div class="col-6">
                 <div style="max-height: 25rem; overflow: auto;">
                     <table id="product_table" class="table" style="border-radius: 0.4rem; overflow: hidden;">
@@ -20,13 +20,15 @@
                         </thead>
                         <tbody class="table-group-divider">
                             {% for product in Products %}
-                            <tr onclick="selectRow(this)">
-                                <th scope="row">{{product.id}}</th>
-                                <td><img src="{{product.product_image.url}}" style="max-height:50px" alt="pd_img"></td>
-                                <td>{{product.product_name}}</td>
-                                <td>{{product.product_quantity}}</td>
-                                <td colspan="2">{{product.product_price}}</td>
-                            </tr>
+                                {% if product.product_quantity > 0 %}
+                                <tr onclick="selectRow(this)">
+                                    <th scope="row">{{product.id}}</th>
+                                    <td><img src="{{product.product_image.url}}" style="max-height:50px" alt="pd_img"></td>
+                                    <td>{{product.product_name}}</td>
+                                    <td>{{product.product_quantity}}</td>
+                                    <td colspan="2">{{product.product_price}}</td>
+                                </tr>
+                            {% endif %}
                         {% endfor %}  
                         </tbody>
                     </table>
@@ -34,7 +36,7 @@
             </div>
             <div class="col-6">
                 <div style="max-height: 25rem; overflow: auto;">
-                    <table class="table" style="border-radius: 0.4rem; overflow: hidden;">
+                    <table id="bill_table" class="table" style="border-radius: 0.4rem; overflow: hidden;">
                         <thead>
                         <tr>
                             <th scope="col">#</th>
@@ -44,12 +46,7 @@
                         </tr>
                         </thead>
                         <tbody class="table-group-divider">
-                        <tr>
-                            <th scope="row">1</th>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>@mdo</td>
-                        </tr>
+                        
                         </tbody>
                     </table>
                 </div>
@@ -59,51 +56,78 @@
     <div class="container-fluid mt-3 px-5 py-4" style="background-color: rgb(217, 201, 219);">
         <div class="row mt-3 mb-3">
             <div class="col-6">
-                <span><strong>Item:</strong></span>
-                <input class="product_name" id="selectedName"
-                        style="height:2.5rem; max-width: 10rem; border: none; border-radius: 0.3rem;" 
-                        type="text">
-                <span><strong>Quantity:</strong></span>
-                <input class="quantity_choose" id="quantity_choose" 
-                        style="height:2.5rem; max-width: 10rem; border: none;border-radius: 0.3rem;" 
-                        type="text">
-                <button class="del_input" 
-                        style="width: 6rem; height: 2.5rem; border: none; background-color: #ee9d12; color: #ffffff; ; border-radius: 0.3rem;"
-                        id="del_input"
-                        onclick="handleButtonDel()">
-                        Delete
-                </button>  
-                <button class="cleaer_input" 
-                        style="width: 7rem; height: 2.5rem; border: none; background-color: #676866; color: #ffffff ; border-radius: 0.3rem;"
-                        id="clear_input"
-                        onclick="clearInput()">
-                        <strong>Clear</strong> 
-                </button>  
+                <div>
+                    <span><strong>Item:</strong></span>
+                    <input class="product_name" id="selectedName"
+                            style="height:2.5rem; max-width: 10rem; border: none; border-radius: 0.3rem;" 
+                            type="text">
+                    <span><strong>Quantity:</strong></span>
+                    <input class="quantity_choose" id="quantity_choose" type="number"
+                            style="height:2.5rem; max-width: 10rem; border: none;border-radius: 0.3rem;" 
+                            >
+                    <button class="del_input" 
+                            style="width: 2.5rem; height: 2.5rem; border: none; background-color: #d80315; color: #ffffff; ; border-radius: 0.3rem;"
+                            id="del_input"
+                            onclick="handleButtonDel()">
+                            X
+                    </button>  
+                    <button class="cleaer_input" 
+                            style="width: 5rem; height: 2.5rem; border: none; background-color: #676866; color: #ffffff ; border-radius: 0.3rem;"
+                            id="clear_input"
+                            onclick="clearInput()">
+                            <strong>Clear</strong> 
+                    </button>  
+                    
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <div class="row">
+                        {% for number in "1234567890" %}
+                        <div class="col-4">
+                            <button class = "btn_numpad m-1"
+                                    style="width: 5rem; height: 2rem; border: none; background-color: #732ee1; border-radius: 0.3rem;" 
+                                    onclick="handleButtonClick('{{ number }}')">{{ number }}</button>
+                        </div>
+                        {% endfor %}
+                        </div>
+                    </div>
+                    <div class="col-6" style="display: flex; justify-content: end;">
+                        <button class="cleaer_input" 
+                                style="width: 7rem; height: 2.5rem; border: none; background-color: #1a8d03; color: #ffffff ; border-radius: 0.3rem;"
+                                id="clear_input"
+                                onclick="addToBill()">
+                                <strong>Add to Bill</strong> 
+                        </button>                                                                                  
+                    </div>
+                </div>
             </div>
-            <div class="col-6">
-                <span><strong>Item:</strong></span>
-                <input class="product_name" style="height:2.5rem; max-width: 10rem; border: none;border-radius: 0.3rem;" type="text">
-                <span><strong>Total price:</strong></span>
-                <input class="total_price" style="height:2.5rem; max-width: 10rem; border: none;border-radius: 0.3rem;" type="text"> 
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-6">
-                {% for number in "0123456789" %}
-                    <button class = "btn_numpad m-2"
-                            style="width: 5rem; height: 2.5rem; border: none; background-color: #732ee1; border-radius: 0.3rem;" 
-                            onclick="handleButtonClick('{{ number }}')">{{ number }}</button>
-                {% endfor %}
-            </div>
-            <div class="col-6">
+            <!-- Col 2 -->
+            <div class="col-6 ">
                 <button class="return" 
                         style="width: 6rem; height: 2.5rem; border: none; background-color: #f01616; color: #ffffff; ; border-radius: 0.3rem;">
                         Return
                 </button>  
-                <button class="Create" 
-                        style="width: 7rem; height: 2.5rem; border: none; background-color: #267a11; color: #ffffff ; border-radius: 0.3rem;">
-                        <strong>Create Order</strong> 
-                </button>  
+                <form method="post" action="{% url 'create_order' %}">
+                    {% csrf_token %}
+                    <div>
+                        <span><strong>Customer:</strong></span>
+                        <input class="customer_name" name="customer_name" style="height:2.5rem; max-width: 10rem; border: none;border-radius: 0.3rem;" type="text">
+                        <span><strong>Total bill</strong></span>
+                        <input class="total_bill" name="total_bill" id="total_bill" 
+                            style="height:3rem; max-width: 10rem; border: none;border-radius: 0.3rem; font-weight: bold; font-size: 1.5rem;" type="text"> 
+                        <span><strong>Total Quantity:</strong></span>
+                        <input class="total_quantity" name="total_quantity" id="total_quantity" type="number"
+                            style="height:2.5rem; max-width: 2.5rem; border: none;border-radius: 0.3rem;">
+                    </div>
+                    <div>
+                      
+                        <button class="Create" type="submit"
+                                style="width: 7rem; height: 2.5rem; border: none; background-color: #267a11; color: #ffffff ; border-radius: 0.3rem;">
+                                <strong>Create Order</strong> 
+                        </button>  
+                    </div>
+                </form>
+                
             </div>
         </div>
     </div>
@@ -125,25 +149,142 @@
     }
     function clearInput(){
         document.getElementById('quantity_choose').value = ''
+        document.getElementById('selectedName').value = ''
     }
-    function selectRow(row) {
-            // Gỡ bỏ lớp 'selected' từ tất cả các dòng
-            var rows = document.getElementById('product_table').getElementsByTagName('tbody')[0].getElementsByTagName('tr');
-            for (var i = 0; i < rows.length; i++) {
-                rows[i].classList.remove('selected');
-            }
-
-            // Thêm lớp 'selected' cho dòng được chọn
-            row.classList.add('selected');
-            var selectedName = row.cells[2].innerText;
-
-            // Lấy giá trị từ cột thứ hai (column2) của dòng được chọn
-            var selectedPrice = row.cells[4].innerText;
-
-            // Đặt giá trị vào input
-            document.getElementById('selectedName').value = selectedName;
-            
+    var row;
+    function selectRow(selectedRow) {
+        row = selectedRow
+        // Gỡ bỏ lớp 'selected' từ tất cả các dòng
+        var rows = document.getElementById('product_table').getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+        for (var i = 0; i < rows.length; i++) {
+            rows[i].classList.remove('selected');
         }
 
+        // Thêm lớp 'selected' cho dòng được chọn
+        selectedRow.classList.add('selected');
+        
+
+        // Lấy giá trị từ cột thứ hai (column2) của dòng được chọn
+        var selectedName = selectedRow.cells[2].innerText;
+
+
+        // Đặt giá trị vào input
+        document.getElementById('selectedName').value = selectedName;
+        
+    }
+
+    var bill = {}
+    var total_bill = 0
+    var total_quantity = 0
+    function addToBill(){
+       
+        var pd_id, selectedName, selectedPrice;
+
+        if (row) {
+            pd_id = row.cells[0].innerText;
+            selectedName = row.cells[2].innerText;
+            selectedPrice = row.cells[4].innerText;
+        }else{
+            alert('Please select a row.');
+            return;
+        }
+        var quantity_choose = document.getElementById('quantity_choose').value
+        if (!selectedName || !quantity_choose || isNaN(quantity_choose) || quantity_choose <= 0) {
+            alert('Please select a product and enter a valid quantity.');
+            return;
+        }else{
+            var quantity = parseInt(quantity_choose, 10);
+            var total_price = selectedPrice * quantity;
+            // Lưu thông tin vào từ điển bill
+            bill[pd_id] = {
+                        selectedName:selectedName,
+                        quantity_choose: quantity_choose,
+                        total_price: total_price
+                    };
+            // Cập nhật tổng giá trị
+            total_bill += total_price;
+            total_quantity += parseInt(quantity_choose)
+            updateSession()
+            updateTotalBill();
+        }
+        console.log(bill);
+        displayBillTable()
+    }
+  
+    function displayBillTable() {
+        var billTable = document.getElementById('bill_table');
+        var tbody = billTable.getElementsByTagName('tbody')[0];
+        // Get the selected product ID
+        var pd_id = row.cells[0].innerText;
+
+        // Check if the product is already in the bill table
+        var existingRow = tbody.querySelector('[data-pd-id="' + pd_id + '"]');
+        
+        if (existingRow) {
+            // If the product exists, update the quantity and total price
+            var quantity = parseInt(existingRow.cells[2].innerText, 10) + parseInt(bill[pd_id].quantity_choose, 10);
+            var total_price = parseFloat(existingRow.cells[3].innerText) + parseFloat(bill[pd_id].total_price);
+            
+            existingRow.cells[2].innerText = quantity;
+            existingRow.cells[3].innerText = total_price.toFixed(2);
+        } else {
+            // If the product does not exist, add a new row
+            var no = tbody.rows.length + 1;
+            var newRow = tbody.insertRow();
+            newRow.dataset.pdId = pd_id;
+
+            var cells = [
+                newRow.insertCell(0),  // No
+                newRow.insertCell(1),  // Product Name
+                newRow.insertCell(2),  // Quantity
+                newRow.insertCell(3)   // Total Price
+            ];
+
+            cells[0].innerText = no;
+            cells[1].innerText = bill[pd_id].selectedName;
+            cells[2].innerText = bill[pd_id].quantity_choose;
+            cells[3].innerText = bill[pd_id].total_price.toFixed(2);
+        
+        }
+    }
+    function updateSession() {
+    // Gửi thông tin từ biến bill vào session
+        fetch('/update_session/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken')
+            },
+            body: JSON.stringify({ 'bill': bill })
+        })
+        .then(response => response.json())
+        .then(data => console.log(data))
+        .catch(error => console.error('Error:', error));
+    }
+
+    // Hàm để lấy giá trị của cookie
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = cookies[i].trim();
+                // Kiểm tra xem cookie có tên là name không
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    function updateTotalBill() {
+        var totalBillInput = document.getElementById('total_bill');
+        totalBillInput.value = total_bill.toFixed(2);
+        var totalQuantityInput = document.getElementById('total_quantity');
+        totalQuantityInput.value = total_quantity
+        
+        
+    }
 </script>
 {% endblock %}

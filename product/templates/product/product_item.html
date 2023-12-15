@@ -8,5 +8,6 @@
 <img src="{{product_detail.product_image.url}}" width="500px" height="300px" />
 {{product_detail.product_desc|safe|linebreaks}}
 <h6>on {{product_detail.date}}</h6>
+<h4>Status: {% if product_detail.status %}<p>Sale</p>{% else %}<p>Unsale</p>{% endif %}</h4>
 
 {% endblock %}

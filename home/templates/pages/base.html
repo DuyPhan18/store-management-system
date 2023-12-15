@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" type="text/css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <style>
         html, body {
             height: 100%;
@@ -25,18 +26,36 @@
     <div class="main" style="min-height:100%">
         <nav class="navbar navbar-expand-lg "  style="background-color: #9739f4 ">
             <div class="container-fluid">
-            <a class="navbar-brand" href=""><img src="{% static 'images/logo.png' %}"style="max-height:35px" alt=""></a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-                <div class="navbar-nav">
-                <a class="nav-link active" aria-current="page" href="/">Home</a>
-                <a class="nav-link" href="/product">Products</a>
-                <a class="nav-link" href="/order">Order</a>
-                <a class="nav-link" href="/summary">Summary</a>
+                <a class="navbar-brand" href=""><img src="{% static 'images/logo.png' %}"style="max-height:35px" alt=""></a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                    <div class="navbar-nav">
+                    <a class="nav-link active" aria-current="page" href="/">Home</a>
+                    <a class="nav-link" href="/product">Products</a>
+                    <a class="nav-link" href="/order">Order</a>
+                    <a class="nav-link" href="/summary">Summary</a>
+                    </div>
                 </div>
-            </div>
+                <div class="dropdown" role="group">
+                    {% if user.username %}
+                    <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">
+                        Xin chao, {{user.username}}
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
+                        <li><a class="dropdown-item" href="#">Info</a></li>
+                    </ul>
+                </div>
+                {% else %}
+                <div class="btn-group" role="group">
+                    <a href="{% url 'register' %}" type="button" class="btn btn-primary">Register</a>
+                    <a href="{% url 'login' %}" type="button" class="btn btn-primary">Login</a>
+                </div>`
+                    
+                {% endif %}
+                
             </div>
         </nav>
       {% block content %}

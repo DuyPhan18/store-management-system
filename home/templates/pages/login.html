@@ -1,0 +1,41 @@
+{% extends "pages/base.html" %}
+
+{% block title %} Login {% endblock %}
+{% block content %}
+
+<form method="POST" class="text-center py-5 m-5" 
+    style="border: none; border-radius: 0.4rem; background-color: rgb(146, 154, 201); max-width: 30%;">
+    {% csrf_token %}
+    {% for key, value in form.errors.items %}
+        {{value}}
+    {% endfor %}
+    <h3 class="text-center">LOGIN</h3>
+    <div class="form-outline mb-4 mt-5">
+        <p><label>Tài khoản:</label>{{form.username}}</p>
+    </div>
+    <div class="form-outline mb-4">
+        <p><label>Mật khẩu:</label>{{form.password}}</p>
+    </div>
+    <input type="hidden" name="next" value="/"/>
+    <input class="btn btn-primary btn-block mb-4" type="submit" value="Login"/>
+    <div class="text-center">
+        <p>Not a member? <a href="{% url 'register' %}">Register</a></p>
+        <p>or sign up with:</p>
+        <button type="button" class="btn btn-link btn-floating mx-1" style="color: #0c0c0c;">
+          <i class="fab fa-facebook-f"></i>
+        </button>
+    
+        <button type="button" class="btn btn-link btn-floating mx-1">
+          <i class="fab fa-google"></i>
+        </button>
+    
+        <button type="button" class="btn btn-link btn-floating mx-1">
+          <i class="fab fa-twitter"></i>
+        </button>
+    
+        <button type="button" class="btn btn-link btn-floating mx-1">
+          <i class="fab fa-github"></i>
+        </button>
+      </div>
+</form>
+{% endblock %}

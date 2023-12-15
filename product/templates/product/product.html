@@ -5,16 +5,19 @@
 {% block content %}
 <div class="container-fluid">
     <div class="row mt-3 pd-3">
-        <div class="col-sm-3">
-        <a class="nav-link active" aria-current="page" href="#">Active</a>
+        <div class="col-sm-2">
+            <button class="btn btn-outline-success ">All</button>
         </div>
-        <div class="col-sm-3">
-            <a class="nav-link" href="#">Disable</a>
+        <div class="col-sm-2">
+            <button class="btn btn-primary" >Active</button>
+        </div>
+        <div class="col-sm-2">
+            <button class="btn" >Disable</button>
         </div>
         
         <div class="col-sm-3">
-            <form class="d-flex" role="search">
-                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+            <form method="GET" action="{% url 'product_list' %}" class="d-flex" role="search">
+                <input name="search" value="{{ query }}" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
                 <button class="btn btn-outline-success" type="submit">Search</button>
             </form>
         </div>
