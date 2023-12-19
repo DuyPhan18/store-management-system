@@ -1,4 +1,4 @@
-![image](https://github.com/DuyPhan18/store-management-system/assets/102722461/338f9f26-a771-416b-a1a8-5913845afb0e)# store-management-system - Django project
+# store-management-system - Django project
 ## Webapp has 5 main pages include home page for sale, product management page, order management page, summary, user and admin managerment.
 ### Python (Django Framework)
 ### database: sqlite
