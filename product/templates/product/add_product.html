@@ -6,7 +6,19 @@
   <h2>Add New Product</h2>
   <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
-    {{ form.as_p }}
+    {% for field in form %}
+      <div class="mb-3">
+        {{ field.label_tag }}
+        {{ field }}
+        {% if field.errors %}
+          <div class="text-danger">
+            {% for error in field.errors %}
+              {{ error }}
+            {% endfor %}
+          </div>
+        {% endif %}
+      </div>
+    {% endfor %}
     <button type="submit">Add Product</button>
   </form>
 {% endblock %}

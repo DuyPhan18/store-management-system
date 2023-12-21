@@ -5,4 +5,10 @@ from .models import Product
 class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
-        fields = ['product_name', 'product_desc', 'product_price', 'product_quantity', 'product_category', 'product_image']
+        fields = ['product_name', 'product_desc', 'product_price', 'product_quantity', 'product_category', 'product_image', 'status']
+
+class UpdateProductForm(forms.ModelForm):
+    class Meta:
+        model = Product
+        fields = ['product_name', 'product_desc', 'product_price', 'product_quantity', 'product_category', 'product_image', 'status']
+

@@ -27,7 +27,11 @@ def create_order(request):
                 product_name = product_info['selectedName']
                 quantity = product_info['quantity_choose']
                 total_price = product_info['total_price']
-                print(f"Product Name: {product_name}, Quantity: {quantity}, Total Price: {total_price}")
+                
+                product = get_object_or_404(Product, id=pd_id)
+                product.product_quantity -= int(quantity)
+                product.save()
+
                 OrderDetails.objects.create(
                     order=order,
                     product_name=product_name,
@@ -36,6 +40,7 @@ def create_order(request):
                 )
             except Exception as e:
                 print(f"Error creating OrderDetails: {e}")
+            
         # Xóa 'bill' khỏi session
         if 'bill' in request.session:
             del request.session['bill']

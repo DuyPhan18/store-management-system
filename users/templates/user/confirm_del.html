@@ -1,0 +1,23 @@
+<div class="container py-2 px-2">
+    <form id="deleteForm" method="POST" action="{% url 'delete_user' user.id %}">
+        <h2>Are you sure you want to delete user '{{ user.username }}'?</h2>
+        {% csrf_token %}
+        <button class="btn btn-primary" type="submit">Yes, delete</button>
+        <a class="btn btn-danger" href="{% url 'user_list' %}">Cancel</a>
+    </form>
+</div>
+<div id="confirmationMessage"></div>
+<script>
+    document.getElementById('deleteForm').addEventListener('submit', function (event) {
+        event.preventDefault();
+        setTimeout(function () {
+            // Update the confirmation message
+            document.getElementById('confirmationMessage').innerText = 'User deleted successfully!';
+
+            // Close the popup after a delay (you can adjust the delay as needed)
+            setTimeout(function () {
+                window.close();
+            }, 2000); // 2000 milliseconds (2 seconds)
+        }, 500); // 500 milliseconds (0.5 seconds)
+    });
+</script>

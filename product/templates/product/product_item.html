@@ -3,11 +3,84 @@
 {% block title %}{{product_detail.product_name}}{% endblock %}
  
 {% block content %}
-
-<h3>{{product_detail.product_name}}</h3>
-<img src="{{product_detail.product_image.url}}" width="500px" height="300px" />
-{{product_detail.product_desc|safe|linebreaks}}
-<h6>on {{product_detail.date}}</h6>
-<h4>Status: {% if product_detail.status %}<p>Sale</p>{% else %}<p>Unsale</p>{% endif %}</h4>
+<div class="container mt-2">
+    <form action="{% url 'update_product' product_detail.id %}" 
+        method="POST" class="update_product" enctype="multipart/form-data" style="border: none; border-radius: 0.4rem;">
+        {% csrf_token %}
+        <div class="row mt-5 ">
+            <div class="col-6">
+                <img src="{{product_detail.product_image.url}}" width="500px" height="300px"  style="border: none; border-radius: 0.4rem;"/>
+                 <!-- Input for Product Image -->
+                <div class="mt-2">
+                    <input type="file" id="product_image" name="product_image" accept="image/*">
+                </div>
+                <div class="">
+                    <label class="form-label" for="product_name"><strong>Product Name:</strong></label>
+                    <input class="form-control" type="text" id="product_name" name="product_name" value="{{ product_detail.product_name }}" required>
+                </div>
+            </div>
+            <div class="col-6">
+                 <!-- Input for Product Description -->
+                <div class="">
+                    <label class="form-label" for="product_desc"><strong>Product Description:</strong></label>
+                    <textarea class="form-control" id="product_desc" name="product_desc" required>{{ product_detail.product_desc }}</textarea>
+                </div>
+                <!-- Input for Product Price -->
+                <div class="">
+                    <label class="form-label" for="product_price"><strong>Product Price:</strong></label>
+                    <input class="form-control" id="product_price" name="product_price" value="{{ product_detail.product_price }}" required>
+                </div>
+                <!-- Input for Product Quantity -->
+                <div class="">
+                    <label class="form-label" for="product_quantity"><strong>Product Quantity:</strong></label>
+                    <input class="form-control" id="product_quantity" name="product_quantity" value="{{ product_detail.product_quantity }}" required>
+                </div>
+                <!-- Input for Product Category -->
+                <div class="">
+                    <label class="form-label" for="product_category"><strong>Product Category:</strong></label>
+                    <input class="form-control" id="product_category" name="product_category" value="{{ product_detail.product_category }}" required>
+                </div>
+                 <!-- Input for Product Date -->
+                <div class="create_date">
+                    <label class="form-label" for="date"><strong>Create Date:</strong></label>
+                    <input class="form-control" type="text" id="date" name="date" value="{{ product_detail.date }}" readonly>
+                </div>
+                <!-- Input for Product Status -->
+                <div class="">
+                    <label class="form-label" for="product_status"><strong>Product Status:</strong></label>
+                    <div class=""id="selectedStatus"></div>
+                    <div class="form-check">
+                        <input class="form-check-input" value="True" type="radio" name="status" id="checkSale" {% if product_detail.status %} checked {% endif %}>
+                        <label class="form-check-label" for="checkSale">
+                            Sale
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" value="False" type="radio"name="status" id="checkUnSale" {% if not product_detail.status %} checked {% endif %}>
+                        <label class="form-check-label" for="checkUnSale">
+                            UnSale
+                        </label>
+                    </div>
+                </div>                
+           </div>
+        </div>
+        <div class="row mt-3">
+             {% if product_detail.status %}
+                <div class="alert alert-success" role="alert">
+                    <h5>Status: {% if product_detail.status %}Sale{% else %}Unsale{% endif %}</h5>
+                </div>
+            {% else %}
+                <div class="alert alert-danger" role="alert">
+                    <h5>Status: {% if product_detail.status %}Sale{% else %}Unsale{% endif %}</h5>
+                </div>
+            {% endif %}
+            
+        </div>
+        {% if not product_detail.status %}
+            <a class="btn btn-danger" href="{% url 'delete_product' product_detail.id %}">Delete</a>
+        {% endif %}
+        <button type="submit" class="btn btn-primary">Update</button>
+    </form>
+</div>
 
 {% endblock %}

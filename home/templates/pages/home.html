@@ -3,6 +3,7 @@
 {% block title %}Homepage{% endblock %}
 
 {% block content %}
+
 <div class="main">
     <div class="container-fluid mt-3"  >
         <div class="row"style="height: 80%">
@@ -20,14 +21,16 @@
                         </thead>
                         <tbody class="table-group-divider">
                             {% for product in Products %}
-                                {% if product.product_quantity > 0 %}
-                                <tr onclick="selectRow(this)">
-                                    <th scope="row">{{product.id}}</th>
-                                    <td><img src="{{product.product_image.url}}" style="max-height:50px" alt="pd_img"></td>
-                                    <td>{{product.product_name}}</td>
-                                    <td>{{product.product_quantity}}</td>
-                                    <td colspan="2">{{product.product_price}}</td>
-                                </tr>
+                                {% if product.status == True %}
+                                    {% if product.product_quantity > 0 %}
+                                    <tr onclick="selectRow(this,'product_table' )">
+                                        <th scope="row">{{product.id}}</th>
+                                        <td><img src="{{product.product_image.url}}" style="max-height:50px" alt="pd_img"></td>
+                                        <td>{{product.product_name}}</td>
+                                        <td>{{product.product_quantity}}</td>
+                                        <td colspan="2">{{product.product_price}}</td>
+                                    </tr>
+                                {% endif %}
                             {% endif %}
                         {% endfor %}  
                         </tbody>
@@ -99,11 +102,12 @@
                                 <strong>Add to Bill</strong> 
                         </button>                                                                                  
                     </div>
+                    
                 </div>
             </div>
             <!-- Col 2 -->
             <div class="col-6 ">
-                <button class="return" 
+                <button class="return" onclick="returnItem()"
                         style="width: 6rem; height: 2.5rem; border: none; background-color: #f01616; color: #ffffff; ; border-radius: 0.3rem;">
                         Return
                 </button>  
@@ -121,7 +125,7 @@
                     </div>
                     <div>
                       
-                        <button class="Create" type="submit"
+                        <button class="Create mt-2" type="submit"
                                 style="width: 7rem; height: 2.5rem; border: none; background-color: #267a11; color: #ffffff ; border-radius: 0.3rem;">
                                 <strong>Create Order</strong> 
                         </button>  
@@ -152,10 +156,10 @@
         document.getElementById('selectedName').value = ''
     }
     var row;
-    function selectRow(selectedRow) {
+    function selectRow(selectedRow, tableId) {
         row = selectedRow
         // Gỡ bỏ lớp 'selected' từ tất cả các dòng
-        var rows = document.getElementById('product_table').getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+        var rows = document.getElementById(tableId).getElementsByTagName('tbody')[0].getElementsByTagName('tr');
         for (var i = 0; i < rows.length; i++) {
             rows[i].classList.remove('selected');
         }
@@ -165,7 +169,9 @@
         
 
         // Lấy giá trị từ cột thứ hai (column2) của dòng được chọn
-        var selectedName = selectedRow.cells[2].innerText;
+        var selectedName = (tableId === 'product_table') ? selectedRow.cells[2].innerText : selectedRow.cells[1].innerText;
+
+        console.log(selectedName);
 
 
         // Đặt giá trị vào input
@@ -207,10 +213,41 @@
             updateSession()
             updateTotalBill();
         }
-        console.log(bill);
+      
         displayBillTable()
     }
-  
+    function  returnItem() {
+        var pd_id, selectedName,selectedQuantity, selectedPrice;
+        if (row) {
+            console.log(row);
+            pd_id = row.dataset.pdId;
+            selectedName = row.cells[1].innerText;
+            selectedQuantity = row.cells[2].innerText;
+            selectedPrice = row.cells[3].innerText;
+            
+        }else{
+            alert('Please select a row.');
+            return;
+        }
+        console.log(bill.hasOwnProperty(pd_id));
+        if (bill.hasOwnProperty(pd_id)) {
+            // Delete the key-value pair
+            delete bill[pd_id];
+            
+            // Remove the corresponding row from the bill_table
+            var billTable = document.getElementById('bill_table');
+            var tbody = billTable.getElementsByTagName('tbody')[0];
+            var rowToDelete = tbody.querySelector('[data-pd-id="' + pd_id + '"]');
+
+            if (rowToDelete) {
+                tbody.removeChild(rowToDelete);
+            }
+            total_bill -= selectedPrice;
+            total_quantity -= parseInt(selectedQuantity)
+            updateSession()
+            updateTotalBill();  
+        }
+    }
     function displayBillTable() {
         var billTable = document.getElementById('bill_table');
         var tbody = billTable.getElementsByTagName('tbody')[0];
@@ -232,7 +269,10 @@
             var no = tbody.rows.length + 1;
             var newRow = tbody.insertRow();
             newRow.dataset.pdId = pd_id;
-
+            // Add an event listener to the new row
+            newRow.addEventListener('click', function () {
+                        selectRow(this, 'bill_table');
+                    });
             var cells = [
                 newRow.insertCell(0),  // No
                 newRow.insertCell(1),  // Product Name
@@ -243,10 +283,11 @@
             cells[0].innerText = no;
             cells[1].innerText = bill[pd_id].selectedName;
             cells[2].innerText = bill[pd_id].quantity_choose;
-            cells[3].innerText = bill[pd_id].total_price.toFixed(2);
+            cells[3].innerText = bill[pd_id].total_price;
         
         }
     }
+    
     function updateSession() {
     // Gửi thông tin từ biến bill vào session
         fetch('/update_session/', {
@@ -280,11 +321,9 @@
     }
     function updateTotalBill() {
         var totalBillInput = document.getElementById('total_bill');
-        totalBillInput.value = total_bill.toFixed(2);
+        totalBillInput.value = total_bill;
         var totalQuantityInput = document.getElementById('total_quantity');
-        totalQuantityInput.value = total_quantity
-        
-        
+        totalQuantityInput.value = total_quantity    
     }
 </script>
 {% endblock %}
