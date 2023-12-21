@@ -8,11 +8,9 @@
 ## Home page(sale page)
 ![image](https://github.com/DuyPhan18/store-management-system/assets/102722461/eb376e0b-3413-4ec7-ad23-73143a51f955)
 
-## User management page
-![ScreenShot Tool -20231220011208](https://github.com/DuyPhan18/store-management-system/assets/102722461/6c16ddaa-388c-4694-97f8-068a66aff8de)
-
 ##Product(add, filter, link to product_detail, update, delete)
-![image](https://github.com/DuyPhan18/store-management-system/assets/102722461/416e5e17-2df8-45d4-a92e-95c830049dcf)
+![image](https://github.com/DuyPhan18/store-management-system/assets/102722461/083f7f6f-1c2a-4f31-9ee9-cd9ad3eeb9e7)
+
 ![image](https://github.com/DuyPhan18/store-management-system/assets/102722461/8273e74c-f60b-49a7-8ef7-8bfe65cb7d84)
 
 ## Order (order_details)
