@@ -19,4 +19,7 @@
 ![image](https://github.com/DuyPhan18/store-management-system/assets/102722461/bd86f872-94a2-4c57-a2a3-340097872d13)
 ![image](https://github.com/DuyPhan18/store-management-system/assets/102722461/0f2f042e-dba8-4c01-b15d-5104932bd3ca)
 ## User(Register, Update, Delete)
+
+![image](https://github.com/DuyPhan18/store-management-system/assets/102722461/ad201fec-7159-4a6a-8340-1a9b82303bdd)
+
 ![image](https://github.com/DuyPhan18/store-management-system/assets/102722461/8f705d75-275b-4787-a6ae-e81c3a31d8eb)
